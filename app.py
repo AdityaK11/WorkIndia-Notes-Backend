@@ -36,6 +36,11 @@ class RegisterPage(Resource):
         if un is None or pw == None or pw == 'None':
             return jsonify({"error": "send password"})
         cursor = mysql.connection.cursor()
+        result = cursor.execute('Select * from  users where username="' + un + '" and password="' + pw + '"')
+        if result > 0:
+            return jsonify({
+                "error": "already exists",
+            })
         query = 'Insert into users(username, password) values("' + un + '","'+pw+'")'
         print(query)
         cursor.execute(query)
